@@ -11,5 +11,6 @@ public class Program {
 		//função para imprimir 
 		//chama a classe UI e o método printBoard
 		UI.printBoard(chessMatch.getPieces());
+		
 	}
 }
