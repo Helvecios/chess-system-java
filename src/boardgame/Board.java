@@ -30,4 +30,14 @@ public class Board {
 	public void setColumns(int columns) {
 		this.columns = columns;
 	}
-}
+	
+	//método para retornar a peça dada uma lina e coluna
+	public Piece piece(int row, int column) {
+		return pieces[row][column];
+	}
+	
+	//fazer uma sobrcarga do método piece para receber a posição da peça
+	public Piece piece(Position position) {
+		return pieces[position.getRow()][position.getColumn()];
+	}
+ }
