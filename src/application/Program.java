@@ -1,14 +1,12 @@
 package application;
 
-import boardgame.Position;
+import boardgame.Board;
 
 public class Program {
 
 	public static void main(String[] args) {
 
-		//instaciar um objeto tipo pos
-		Position pos = new Position(3, 5);
-		
-		System.out.println(pos);
+		//instaciar um objeto tipo tabuleiro
+		Board board = new Board(8, 8);
 	}
 }
