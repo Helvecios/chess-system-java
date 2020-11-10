@@ -36,8 +36,15 @@ public class Board {
 		return pieces[row][column];
 	}
 	
-	//fazer uma sobrcarga do método piece para receber a posição da peça
+	//fazer uma sobrecarga do método piece para receber a posição da peça
 	public Piece piece(Position position) {
 		return pieces[position.getRow()][position.getColumn()];
 	}
+	
+	//método para colocar uma peça no tabuleiro
+	public void placePiece(Piece piece, Position position) {
+		pieces[position.getRow()][position.getColumn()] = piece;
+		piece.position = position; //informa que essa peça não está mais na posição nula
+	}
+	
  }
