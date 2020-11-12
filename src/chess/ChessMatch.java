@@ -1,6 +1,10 @@
 package chess;
 
+import java.util.InputMismatchException;
+
 import boardgame.Board;
+import boardgame.Piece;
+import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
@@ -28,9 +32,34 @@ public class ChessMatch {
 		return mat; //retorna a matrix de peças da partida de xadrez "mat"
 	}
 	
+	//método para mover uma peça da "sourcePosition" para "targetPosition"
+	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
+		Position source = sourcePosition.toPosition(); //converte a posição "source" para a posição da matrix 
+		Position target = targetPosition.toPosition(); //converte a posição "target" para a posição da matrix 
+		//verifica se na posição de origem existe uma peça
+		validateSourcePosition(source);
+		Piece capturedPiece = makeMove(source, target); //responsavel por mover a peça da posição atual para a pretendida
+		return (ChessPiece)capturedPiece; //tem que fazer um downcasting para o ChesPiece pois apeça captura era do tipo Piece
+	}
+	
 	//método que recebe as coordenadas do Chess a1 to h8 
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); //instancia "ChessPosition" e chama método toPosition() para converter converter para posição de matrix
+	}
+	
+	//método para validar a posição inicial da peça 
+	private void validateSourcePosition(Position position) {
+		if (!board.thereIsAPiece(position)) {
+			throw new InputMismatchException("There is no piece on source position");
+			}
+		}
+	
+	//método makeMove() para mover uma peça da "sourcePosition" para "targetPosition"
+	private Piece makeMove(Position source, Position target) {
+		Piece p = board.removePiece(source); //remove a peça que estava na posição de origem
+		Piece capturedPiece = board.removePiece(target); //remove a possível peça que está na posição de destino
+		board.placePiece(p, target); //coloca a peça que estava na posição de origem na posição de destino
+		return capturedPiece; //retorna a peça captura
 	}
 	
 	//método para setup inicial da partida colocando as peças no tabuleiro
