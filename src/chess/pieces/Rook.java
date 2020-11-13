@@ -17,5 +17,12 @@ public class Rook extends ChessPiece { //herda da classe ChesPiece
 	public String toString() {
 		return "R";
 	}
+	
+	//método movimentos possíveis para a Rook
+		@Override
+		public boolean[][] possibleMoves() {
+			boolean [][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
+			return mat; //retorna uma matriz com todas as posições como false (simulando com a Rook estivesse preso)
+		}
 
 }

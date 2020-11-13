@@ -16,4 +16,11 @@ public class King extends ChessPiece { //herda da classe ChesPiece
 	public String toString() {
 		return "K";
 	}
+
+	//método movimentos possíveis para o King
+	@Override
+	public boolean[][] possibleMoves() {
+		boolean [][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
+		return mat; //retorna uma matriz com todas as posições como false (simulando com o King estivesse preso)
+	}
 } 
