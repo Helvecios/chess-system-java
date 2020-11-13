@@ -13,13 +13,27 @@ public class ChessMatch {
 	
 	//atributo
 	private Board board;
+	private int turn;
+	private Color currentPlayer;
+	
 	
 	//construtor padrão
 	public ChessMatch() {
 		board = new Board(8, 8);//instancia o tabuleiro
+		turn = 1; //primeiro jogada
+		currentPlayer = Color.WHITE; //o jogador das peças brancas é quem começa a jogar
 		initialSetup(); //chama o método para colocar as peças no tabuleiro
 	}
 
+	//getters
+	public int getTurn() {
+		return turn;
+	}
+	
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
 	//método para retornar uma matriz de peças de xadrez correspondente a esta partida
 	public ChessPiece[][] getPieces() {
 		ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()]; //instanciar a matrix "mat"
@@ -48,6 +62,7 @@ public class ChessMatch {
 		//verifica se na posição de destino tem uma peça
 		validadeTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target); //responsavel por mover a peça da posição atual para a pretendida
+		nextTurn(); //para trocar o turno (o outro jogador) 
 		return (ChessPiece)capturedPiece; //tem que fazer um downcasting para o ChesPiece pois apeça captura era do tipo Piece
 	}
 	
@@ -61,6 +76,10 @@ public class ChessMatch {
 		if (!board.thereIsAPiece(position)) {
 			throw new InputMismatchException("There is no piece on source position");
 			}
+		if (currentPlayer != ((ChessPiece)board.piece(position)).getColor()) { //downcasting, se esta peça for diferente do jogar atual, significa que é uma peça do adversário, não posso move-la
+			throw new ChessException("The chosen piece is not yours");
+			
+		}
 		if (!board.piece(position).isThereAnyPossibleMove()) {
 			throw new ChessException("There is no possible moves for the chosen piece");
 		}
@@ -80,6 +99,12 @@ public class ChessMatch {
 		Piece capturedPiece = board.removePiece(target); //remove a possível peça que está na posição de destino
 		board.placePiece(p, target); //coloca a peça que estava na posição de origem na posição de destino
 		return capturedPiece; //retorna a peça captura
+	}
+	
+	//método para trocar o turno para o outro jogador
+	private void nextTurn() {
+		turn++;
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;//condição ternária para trocar o jogador
 	}
 	
 	//método para setup inicial da partida colocando as peças no tabuleiro
