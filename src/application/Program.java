@@ -1,6 +1,8 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import chess.ChessException;
@@ -16,26 +18,33 @@ public class Program {
 		
 		//instaciar um objeto tipo partida de xadrez
 		ChessMatch chessMatch = new ChessMatch();
+		
+		//list de peças do tipo captured e inicia como ArrayList<>
+		List<ChessPiece> captured = new ArrayList<>();
 
 		while (true) {
 			try {
-			UI.clearScreen(); //chama método de limpar a tela	
-			//chama a classe UI e o método printBoard
-			UI.printMatch(chessMatch); //imprime a partida
-			System.out.println();
-			System.out.print("Source: ");
-			ChessPosition source = UI.readChessPosition(sc);
-			
-			//declara um matrix chamada possibleMovies
-			boolean[][] possibleMoves = chessMatch.possibleMoves(source);
-			UI.clearScreen(); //limpa a tela
-			UI.printBoard(chessMatch.getPieces(), possibleMoves); //imprime o tabuleiro e sobrecarrega com os movimentos possíveis
-			
-			System.out.println();
-			System.out.print("Target: ");
-			ChessPosition target = UI.readChessPosition(sc);
-			
-			ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
+				UI.clearScreen(); //chama método de limpar a tela	
+				//chama a classe UI e o método printBoard
+				UI.printMatch(chessMatch, captured); //imprime a partida e a lista de peças capturadas
+				System.out.println();
+				System.out.print("Source: ");
+				ChessPosition source = UI.readChessPosition(sc);
+				
+				//declara um matrix chamada possibleMovies
+				boolean[][] possibleMoves = chessMatch.possibleMoves(source);
+				UI.clearScreen(); //limpa a tela
+				UI.printBoard(chessMatch.getPieces(), possibleMoves); //imprime o tabuleiro e sobrecarrega com os movimentos possíveis
+				
+				System.out.println();
+				System.out.print("Target: ");
+				ChessPosition target = UI.readChessPosition(sc);
+				
+				ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
+				
+				if (capturedPiece != null) {
+					captured.add(capturedPiece); //adiciona a peça capturada a lista de peças capturadas
+				}
 			}
 			catch (ChessException e) {
 				System.out.println(e.getMessage());

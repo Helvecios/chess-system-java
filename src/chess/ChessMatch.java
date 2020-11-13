@@ -1,6 +1,8 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 
 import boardgame.Board;
 import boardgame.Piece;
@@ -16,7 +18,10 @@ public class ChessMatch {
 	private int turn;
 	private Color currentPlayer;
 	
-	
+	//declara a lista das peças do jogo e a lista das peças capturadas e instancia
+	private List<Piece> piecesOnTheBoard = new ArrayList<>();
+	private List<Piece> capturedPieces = new ArrayList<>();
+		
 	//construtor padrão
 	public ChessMatch() {
 		board = new Board(8, 8);//instancia o tabuleiro
@@ -66,11 +71,6 @@ public class ChessMatch {
 		return (ChessPiece)capturedPiece; //tem que fazer um downcasting para o ChesPiece pois apeça captura era do tipo Piece
 	}
 	
-	//método que recebe as coordenadas do Chess a1 to h8 
-	private void placeNewPiece(char column, int row, ChessPiece piece) {
-		board.placePiece(piece, new ChessPosition(column, row).toPosition()); //instancia "ChessPosition" e chama método toPosition() para converter converter para posição de matrix
-	}
-	
 	//método para validar a posição inicial da peça 
 	private void validateSourcePosition(Position position) {
 		if (!board.thereIsAPiece(position)) {
@@ -98,6 +98,10 @@ public class ChessMatch {
 		Piece p = board.removePiece(source); //remove a peça que estava na posição de origem
 		Piece capturedPiece = board.removePiece(target); //remove a possível peça que está na posição de destino
 		board.placePiece(p, target); //coloca a peça que estava na posição de origem na posição de destino
+		
+		if(capturedPiece != null); //significa que capturei uma peça
+			piecesOnTheBoard.remove(capturedPiece); //remove a peça na lista de peças do jogo
+			capturedPieces.add(capturedPiece); //incluie a peça na lista de peças
 		return capturedPiece; //retorna a peça captura
 	}
 	
@@ -105,7 +109,13 @@ public class ChessMatch {
 	private void nextTurn() {
 		turn++;
 		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE;//condição ternária para trocar o jogador
-	}
+		}
+	
+	//método que recebe as coordenadas do Chess a1 to h8 
+		private void placeNewPiece(char column, int row, ChessPiece piece) {
+			board.placePiece(piece, new ChessPosition(column, row).toPosition()); //instancia "ChessPosition" e chama método toPosition() para converter converter para posição de matrix
+			piecesOnTheBoard.add(piece); //incluie a peça na lista de peças do jogo
+		}
 	
 	//método para setup inicial da partida colocando as peças no tabuleiro
 	private void initialSetup() {
