@@ -8,6 +8,7 @@ public abstract class ChessPiece extends Piece { //herda da classe Piece
 
 	//atributo
 	private Color color;
+	private int moveCount;
 
 	//construtor com argumentos
 	public ChessPiece(Board board, Color color) {
@@ -19,6 +20,22 @@ public abstract class ChessPiece extends Piece { //herda da classe Piece
 	public Color getColor() {
 		return color;
 	}
+	
+	public int getMoveCount() {
+		return moveCount;
+	}
+		
+	//método para incrementar o contador de movimentos
+	public void increaseMoveCount() 
+	{
+		moveCount++;
+	}
+	
+	//método para decrementar o contador de movimentos
+		public void decreaseMoveCount() 
+		{
+			moveCount--;
+		}
 	
 	public ChessPosition getChessPosition() {
 		return ChessPosition.fromPosition(position); //converte position para chessPosition

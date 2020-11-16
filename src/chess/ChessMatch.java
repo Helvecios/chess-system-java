@@ -123,7 +123,8 @@ public class ChessMatch {
 	
 	//método makeMove() para mover uma peça da "sourcePosition" para "targetPosition"
 	private Piece makeMove(Position source, Position target) {
-		Piece p = board.removePiece(source); //remove a peça que estava na posição de origem
+		ChessPiece p = (ChessPiece)board.removePiece(source); //remove a peça que estava na posição de origem. Fazer downcasting (ChessPiece)board
+		p.increaseMoveCount(); //soma o número de movimentos
 		Piece capturedPiece = board.removePiece(target); //remove a possível peça que está na posição de destino
 		board.placePiece(p, target); //coloca a peça que estava na posição de origem na posição de destino
 		
@@ -135,7 +136,8 @@ public class ChessMatch {
 	
 	//método para desfazer o movimento
 	private void undoMove(Position source, Position target, Piece capturedPiece) {
-		Piece p = board.removePiece(target); //remove a peça que vc colocou no destino
+		ChessPiece p = (ChessPiece)board.removePiece(target); //remove a peça que vc colocou no destino. Faz um downcasting (ChessPiece)board
+		p.decreaseMoveCount(); //subtrai o número de movimentos
 		board.placePiece(p, source);//devolve a peça para a origem
 		//se tinha capturado uma peça ela tem que ser devolvida para a posiçao de destino
 		if(capturedPiece != null) {
