@@ -22,7 +22,7 @@ public class Program {
 		//list de peças do tipo captured e inicia como ArrayList<>
 		List<ChessPiece> captured = new ArrayList<>();
 
-		while (true) {
+		while (!chessMatch.getCheckMate()) { //enquanto a partida não tiver cheque mate, continua ...
 			try {
 				UI.clearScreen(); //chama método de limpar a tela	
 				//chama a classe UI e o método printBoard
@@ -55,6 +55,8 @@ public class Program {
 				sc.nextLine(); //para aguardar apertar enter
 			}
 		}
+		UI.clearScreen(); //limpa a tela
+		UI.printMatch(chessMatch, captured); //imprimi a partida com a visão do cheque mate
 		
 	}
 }
