@@ -20,6 +20,10 @@ public abstract class ChessPiece extends Piece { //herda da classe Piece
 		return color;
 	}
 	
+	public ChessPosition getChessPosition() {
+		return ChessPosition.fromPosition(position); //converte position para chessPosition
+	}
+	
 	//operção para verificar se existe um peça  adversária na posição desejada
 	protected boolean isThereOpponentPiece(Position position) {
 		//pega a peça que está na posição desejada
