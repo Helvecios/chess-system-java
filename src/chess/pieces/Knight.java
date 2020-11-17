@@ -5,7 +5,7 @@ import boardgame.Position;
 import chess.ChessPiece;
 import chess.Color;
 
-//Rei
+//Bispo
 public class Knight extends ChessPiece { //herda da classe ChesPiece
 
 	public Knight(Board board, Color color) {
@@ -18,7 +18,7 @@ public class Knight extends ChessPiece { //herda da classe ChesPiece
 		return "N";
 	}
 
-	//método movimentos possíveis para o Knigh
+	//método movimentos possíveis para o Knight
 	private boolean canMove(Position position) {
 		ChessPiece p = (ChessPiece)getBoard().piece(position); //pega a peça p que está na desta posiçao
 		return p == null || p.getColor() != getColor(); //retorna a peça se ela existir e se a cor for diferente da cor deste cavalo
