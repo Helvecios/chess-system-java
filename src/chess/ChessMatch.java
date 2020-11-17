@@ -92,9 +92,7 @@ public class ChessMatch {
 		
 		//verifica se o oponente entrou em check
 		check = (testCheck(opponent(currentPlayer))) ? true : false;//expressão condicional ternária
-		
-		
-		//
+	
 		if(testCheckMate(opponent(currentPlayer))) { //se a jogada deixou o openente em cheque mate, "true"
 			checkMate = true;
 		}
@@ -135,6 +133,25 @@ public class ChessMatch {
 		if(capturedPiece != null); //significa que capturei uma peça
 			piecesOnTheBoard.remove(capturedPiece); //remove a peça na lista de peças do jogo
 			capturedPieces.add(capturedPiece); //incluie a peça na lista de peças
+			
+			//verifica se foi um roque pequeno
+			if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
+				Position sourceT = new Position(source.getRow(), source.getColumn() + 3); //posição de origem da torre do rei
+				Position targetT = new Position(source.getRow(), source.getColumn() + 1); //posição de destino da torre do rei
+				ChessPiece rook = (ChessPiece)board.removePiece(sourceT); //pega a torre do rei na posição de origem
+				board.placePiece(rook, targetT); //coloca a torre do rei na posição de destino
+				rook.increaseMoveCount(); //incrementa a quantidade de movimentos da torre
+			}	
+						
+			//verifica se foi um roque grande
+			if (p instanceof King && target.getColumn() == source.getColumn() - 2) {
+				Position sourceT = new Position(source.getRow(), source.getColumn() - 4); //posição de origem da torre da rainha
+				Position targetT = new Position(source.getRow(), source.getColumn() - 1); //posição de destino da torre da rainha
+				ChessPiece rook = (ChessPiece)board.removePiece(sourceT); //pega a torre da rainha na posição de origem
+				board.placePiece(rook, targetT); //coloca a torre da rainha na posição de destino
+				rook.increaseMoveCount(); //incrementa a quantidade de movimentos da torre
+			}
+			
 		return capturedPiece; //retorna a peça captura
 	}
 	
@@ -149,6 +166,25 @@ public class ChessMatch {
 			capturedPieces.remove(capturedPiece); //remove a peça que estava na posição de destino
 			piecesOnTheBoard.add(capturedPiece); //adciona a peça na lista de peças do tabuleiro
 		}
+		
+		//verifica se foi um roque pequeno
+		if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
+			Position sourceT = new Position(source.getRow(), source.getColumn() + 3); //posição de origem da torre do rei
+			Position targetT = new Position(source.getRow(), source.getColumn() + 1); //posição de destino da torre do rei
+			ChessPiece rook = (ChessPiece)board.removePiece(targetT); //pega a torre do rei na posição de destino
+			board.placePiece(rook, sourceT); //coloca a torre do rei na posição de origem
+			rook.decreaseMoveCount(); //decrementa a quantidade de movimentos da torre
+		}	
+					
+		//verifica se foi um roque grande
+		if (p instanceof King && target.getColumn() == source.getColumn() - 2) {
+			Position sourceT = new Position(source.getRow(), source.getColumn() - 4); //posição de origem da torre da rainha
+			Position targetT = new Position(source.getRow(), source.getColumn() - 1); //posição de destino da torre da rainha
+			ChessPiece rook = (ChessPiece)board.removePiece(targetT); //pega a torre da rainha na posição de destino
+			board.placePiece(rook, sourceT); //coloca a torre da rainha na posição de origem
+			rook.decreaseMoveCount(); //decrementa a quantidade de movimentos da torre
+		}
+		
 	}
 	
 	//método para trocar o turno para o outro jogador
@@ -222,7 +258,6 @@ public class ChessMatch {
 		return true;
 	}
 	
-	
 	//método que recebe as coordenadas do Chess a1 to h8 
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition()); //instancia "ChessPosition" e chama método toPosition() para converter converter para posição de matrix
@@ -235,7 +270,7 @@ public class ChessMatch {
 		placeNewPiece('b', 1, new Knight(board, Color.WHITE));
 		placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
 		placeNewPiece('d', 1, new Queen(board, Color.WHITE));
-        placeNewPiece('e', 1, new King(board, Color.WHITE));
+        placeNewPiece('e', 1, new King(board, Color.WHITE, this));
         placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
         placeNewPiece('g', 1, new Knight(board, Color.WHITE));
         placeNewPiece('h', 1, new Rook(board, Color.WHITE));
@@ -252,7 +287,7 @@ public class ChessMatch {
         placeNewPiece('b', 8, new Knight(board, Color.BLACK));
         placeNewPiece('c', 8, new Bishop(board, Color.BLACK));
         placeNewPiece('d', 8, new Queen(board, Color.BLACK));
-        placeNewPiece('e', 8, new King(board, Color.BLACK));
+        placeNewPiece('e', 8, new King(board, Color.BLACK, this));
         placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
         placeNewPiece('g', 8, new Knight(board, Color.BLACK));
         placeNewPiece('h', 8, new Rook(board, Color.BLACK));
