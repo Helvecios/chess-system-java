@@ -79,6 +79,6 @@ public class King extends ChessPiece { //herda da classe ChesPiece
 			mat[p.getRow()][p.getColumn()] = true; //marca como true (posição possível)
 		}
 		
-		return mat; //retorna uma matriz com todas as posições como false (simulando com o King estivesse preso)
+		return mat; //retorna uma matriz com todas as posições como false (simulando como o King estivesse preso)
 	}
 } 
