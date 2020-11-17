@@ -2,15 +2,20 @@ package chess.pieces;
 
 import boardgame.Board;
 import boardgame.Position;
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.Color;
 
 //Peão
 public class Pawn extends ChessPiece { //herda da classe ChesPiece
+	
+	//dependencia (associação) para partida (ChessMatch)
+	private ChessMatch chessMatch;
 
-	public Pawn(Board board, Color color) {
+	//construtor com argumentos
+	public Pawn(Board board, Color color, ChessMatch chessMatch) {
 		super(board, color); //herdado da classe ChesPiece
-		
+		this.chessMatch = chessMatch; 
 	} 
 	
 //método movimentos possíveis para o Pawn
@@ -44,9 +49,23 @@ public boolean[][] possibleMoves() {
 	
 	//verifica se o peão pode mover na diagonal direita (para comer peão adversário)
 		p.setValues(position.getRow() - 1, position.getColumn() + 1); //move uma posição na diagonal para a esquerda se existir uma peça adversária lá
-		if(getBoard().positionExists(p) && isThereOpponentPiece(p)) { //significa que o peão pode mover na diagonal esquerda
-			mat[p.getRow()][p.getColumn()] = true;
+	if(getBoard().positionExists(p) && isThereOpponentPiece(p)) { //significa que o peão pode mover na diagonal esquerda
+		mat[p.getRow()][p.getColumn()] = true;
+	}
+		
+	//tratamento do en passant peças brancas
+	if (position.getRow() == 3) {
+		//peão do adversário a esquerda
+		Position left = new Position(position.getRow(), position.getColumn() - 1);
+		if (getBoard().positionExists(left) && isThereOpponentPiece(left) && getBoard().piece(left) == chessMatch.getEnPassantVunerable()) {
+			mat[left.getRow() - 1][left.getColumn()] = true; //posição que o peão ira se mover no "en passant"
 		}
+		//peão do adversário a esquerda
+		Position right = new Position(position.getRow(), position.getColumn() + 1);
+		if (getBoard().positionExists(right) && isThereOpponentPiece(right) && getBoard().piece(right) == chessMatch.getEnPassantVunerable()) {
+			mat[right.getRow() - 1][right.getColumn()] = true; //posição que o peão ira se mover no "en passant"
+		}
+	}
 	
 	}
 	//movimentos do peão na cor preta
@@ -75,8 +94,22 @@ public boolean[][] possibleMoves() {
 			if(getBoard().positionExists(p) && isThereOpponentPiece(p)) { //significa que o peão pode mover na diagonal esquerda
 				mat[p.getRow()][p.getColumn()] = true;
 			}
+			
+		//tratamento do en passant peças pretas
+		if (position.getRow() == 4) {
+			//peão do adversário a esquerda
+			Position left = new Position(position.getRow(), position.getColumn() - 1);
+			if (getBoard().positionExists(left) && isThereOpponentPiece(left) && getBoard().piece(left) == chessMatch.getEnPassantVunerable()) {
+				mat[left.getRow() + 1][left.getColumn()] = true; //posição que o peão ira se mover no "en passant"
+			}
+			//peão do adversário a esquerda
+			Position right = new Position(position.getRow(), position.getColumn() + 1);
+			if (getBoard().positionExists(right) && isThereOpponentPiece(right) && getBoard().piece(right) == chessMatch.getEnPassantVunerable()) {
+				mat[right.getRow() + 1][right.getColumn()] = true; //posição que o peão ira se mover no "en passant"
+			}
+		}	
 		
-		}
+	}
 	
 	return mat;
 }
