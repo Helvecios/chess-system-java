@@ -47,7 +47,11 @@ public class Program {
 				}
 				if (chessMatch.getPromoted() != null) { //significa que uma peça foi promovida
 					System.out.print("Enter piece for promotion (B/N/R/Q)");
-					String type = sc.nextLine(); //escolhe a peça que irá substituir o peão
+					String type = sc.nextLine().toUpperCase(); //escolhe a peça que irá substituir o peão e força que a letra digitada seja maiúscula
+					while (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) {
+					System.out.print("Invalid value! Enter piece for promotion (B/N/R/Q) ");
+					type = sc.nextLine().toUpperCase();
+					}
 					chessMatch.replacePromotedPiece(type);
 				}
 			}

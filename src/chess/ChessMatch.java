@@ -1,6 +1,5 @@
 package chess;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -142,7 +141,7 @@ public class ChessMatch {
 			throw new IllegalStateException("There is no piece to be promoted");
 		}
 		if (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) { //verifica se a peça solicitada para a troca é válida
-			throw new InvalidParameterException("Invalid type for promotion");
+			return promoted;
 		}
 		Position pos = promoted.getChessPosition().toPosition(); //peça a posição da peça promovida
 		Piece p = board.removePiece(pos); //remove o peão a ser promovido e guarda na variável "p"
@@ -286,7 +285,7 @@ public class ChessMatch {
 	
 	//método para devolver o oponente da cor
 	private Color opponent(Color color) {
-		return (color == Color.WHITE) ? Color.BLACK : color.WHITE;
+		return (color == Color.WHITE) ? Color.BLACK : Color.WHITE;
 	}
 	
 	//método para localizar o rei de uma determinada cor
